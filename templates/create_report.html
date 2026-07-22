@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء تقرير جديد | منصة تشيك</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00a896;
+            --primary-dark: #028074;
+            --primary-light: #e0f7f5;
+            --accent: #1a535c;
+            --bg: #f0f4f8;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #4a5568;
+            --muted: #8892b0;
+            --border: #e2e8f0;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --danger: #e63946;
+            --success: #2ec4b6;
+            --warning: #f4a261;
+            --gradient: linear-gradient(135deg, #00a896 0%, #028074 50%, #1a535c 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 150, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(2, 192, 154, 0.05) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            font-size: 40px;
+            background: var(--primary-light);
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .form-card {
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .required {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text);
+            background: #fafbfc;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.1);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: #cbd5e1;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        /* Tags Input */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px;
+            background: #fafbfc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            min-height: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .tags-container.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.1);
+        }
+
+        .tag {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: 700;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        .tags-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 14px;
+            outline: none;
+            min-width: 150px;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 168, 150, 0.3);
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 150, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 2px solid var(--border);
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading State */
+        .btn-loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e3a8a;
+            border: 1px solid #bfdbfe;
+        }
+
+        /* Help Text */
+        .help-box {
+            background: var(--primary-light);
+            border-right: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .help-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* Success Result */
+        .success-result {
+            display: none;
+            background: #d1fae5;
+            border: 2px solid var(--success);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-result.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .success-result h3 {
+            color: #065f46;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .success-result p {
+            color: #0f6937;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .result-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 13px;
+            flex: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-card {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                flex-wrap: wrap;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <div class="header-icon">📝</div>
+                إنشاء تقرير طبي جديد
+            </h1>
+            <p>ملئ النموذج أدناه لإنشاء تقرير طبي جديد سيتم توليد QR Code تلقائياً</p>
+        </div>
+
+        <!-- Alerts -->
+        <div id="alerts-container"></div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <form id="reportForm">
+                <!-- Help Box -->
+                <div class="help-box">
+                    <div class="help-icon">ℹ️</div>
+                    <div>
+                        <strong>نصيحة:</strong> الحقول المعلّمة بـ <span class="required">*</span> إلزامية. بعد إنشاء التقرير، ستحصل على رابط مشاركة و QR Code تلقائي.
+                    </div>
+                </div>
+
+                <!-- Section 1: Patient Info -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">👤</span>
+                        معلومات المريض
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                اسم المريض
+                                <span class="required">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                class="form-input"
+                                name="patient_name"
+                                placeholder="أدخل اسم المريض كاملاً"
+                                required
+                            >
+                            <span class="input-hint">الاسم الثلاثي أو أكثر</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                العمر
+                                <span class="required">*</span>
+                            </label>
+                            <input
+                                type="number"
+                                class="form-input"
+                                name="patient_age"
+                                placeholder="مثال: 30"
+                                min="0"
+                                max="150"
+                                required
+                            >
+                            <span class="input-hint">العمر بالسنوات</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                فصيلة الدم
+                                <span class="required">*</span>
+                            </label>
+                            <select class="form-select" name="patient_blood_type" required>
+                                <option value="">اختر فصيلة الدم</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                            <span class="input-hint">اختر من القائمة</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Report Details -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">📋</span>
+                        تفاصيل التقرير
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                نوع التقرير
+                                <span class="required">*</span>
+                            </label>
+                            <select class="form-select" name="report_type" required>
+                                <option value="">اختر نوع التقرير</option>
+                                <option value="فحص عام">فحص عام</option>
+                                <option value="تحليل دم">تحليل دم</option>
+                                <option value="أشعة سينية">أشعة سينية</option>
+                                <option value="موجات فوق صوتية">موجات فوق صوتية</option>
+                                <option value="فحص القلب">فحص القلب</option>
+                                <option value="فحص العيون">فحص العيون</option>
+                                <option value="فحص الأسنان">فحص الأسنان</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                            <span class="input-hint">نوع الفحص الطبي</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                تاريخ الفحص
+                                <span class="required">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                class="form-input"
+                                name="examination_date"
+                                required
+                            >
+                            <span class="input-hint">تاريخ إجراء الفحص</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Medical Details -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">🏥</span>
+                        التفاصيل الطبية
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">
+                                التشخيص
+                                <span class="required">*</span>
+                            </label>
+                            <textarea
+                                class="form-textarea"
+                                name="diagnosis"
+                                placeholder="أدخل التشخيص الطبي والملاحظات الرئيسية..."
+                                required
+                            ></textarea>
+                            <span class="input-hint">وصف تفصيلي للتشخيص والنتائج</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Medications -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">💊</span>
+                        الأدوية الموصوفة
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">أدوية موصوفة (اختياري)</label>
+                            <div class="tags-container" id="medicinesContainer">
+                                <input
+                                    type="text"
+                                    class="tags-input"
+                                    id="medicinesInput"
+                                    placeholder="أضف دواء واضغط Enter..."
+                                >
+                            </div>
+                            <span class="input-hint">مثال: الأسبرين، الإيبوبروفين، إلخ...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Allergies -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">⚠️</span>
+                        الحساسيات
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">الحساسيات المعروفة (اختياري)</label>
+                            <div class="tags-container" id="allergiesContainer">
+                                <input
+                                    type="text"
+                                    class="tags-input"
+                                    id="allergiesInput"
+                                    placeholder="أضف حساسية واضغط Enter..."
+                                >
+                            </div>
+                            <span class="input-hint">مثال: البنسلين، الفول السوداني، إلخ...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Additional Notes -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <span class="section-icon">📝</span>
+                        ملاحظات إضافية
+                    </h3>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label class="form-label">ملاحظات (اختياري)</label>
+                            <textarea
+                                class="form-textarea"
+                                name="notes"
+                                placeholder="أضف أي ملاحظات أو توصيات إضافية..."
+                                style="min-height: 100px;"
+                            ></textarea>
+                            <span class="input-hint">توصيات المتابعة أو أي معلومات مهمة أخرى</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        ✓ إنشاء التقرير
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        ↻ مسح النموذج
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Result -->
+            <div class="success-result" id="successResult">
+                <div class="success-icon">✓</div>
+                <h3>تم إنشاء التقرير بنجاح!</h3>
+                <p>تم توليد رابط مشاركة و QR Code تلقائياً</p>
+                <div class="result-buttons">
+                    <button class="btn btn-primary btn-small" onclick="viewReport()">
+                        👁️ عرض التقرير
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="downloadQR()">
+                        📥 تحميل QR Code
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="copyShareLink()">
+                        📋 نسخ رابط المشاركة
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="createAnother()">
+                        ➕ تقرير جديد
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let medicines = [];
+        let allergies = [];
+        let createdReport = null;
+
+        // Tags Input Handler
+        function setupTagsInput(inputId, containerId, tagsArray) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+
+            container.addEventListener('click', () => input.focus());
+
+            container.addEventListener('focus', () => {
+                container.classList.add('active');
+            }, true);
+
+            container.addEventListener('blur', () => {
+                container.classList.remove('active');
+            }, true);
+
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = input.value.trim();
+                    if (value && !tagsArray.includes(value)) {
+                        tagsArray.push(value);
+                        renderTags(tagsArray, inputId, containerId);
+                        input.value = '';
+                    }
+                }
+            });
+        }
+
+        function renderTags(tagsArray, inputId, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            tagsArray.forEach((tag) => {
+                const tagEl = document.createElement('div');
+                tagEl.className = 'tag';
+                tagEl.innerHTML = `
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag('${tag}', ${tagsArray === medicines ? 'medicines' : 'allergies'})">×</span>
+                `;
+                container.appendChild(tagEl);
+            });
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'tags-input';
+            input.id = inputId;
+            input.placeholder = inputId === 'medicinesInput' ? 'أضف دواء واضغط Enter...' : 'أضف حساسية واضغط Enter...';
+            container.appendChild(input);
+
+            // Re-attach event listener
+            setupTagsInput(inputId, containerId, tagsArray);
+        }
+
+        function removeTag(tag, array) {
+            const tags = array === 'medicines' ? medicines : allergies;
+            const index = tags.indexOf(tag);
+            if (index > -1) {
+                tags.splice(index, 1);
+                const containerId = array === 'medicines' ? 'medicinesContainer' : 'allergiesContainer';
+                const inputId = array === 'medicines' ? 'medicinesInput' : 'allergiesInput';
+                renderTags(tags, inputId, containerId);
+            }
+        }
+
+        // Initialize Tags
+        setupTagsInput('medicinesInput', 'medicinesContainer', medicines);
+        setupTagsInput('allergiesInput', 'allergiesContainer', allergies);
+
+        // Form Submission
+        document.getElementById('reportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+            const alertsContainer = document.getElementById('alerts-container');
+
+            // Validate
+            if (!form.checkValidity()) {
+                showAlert('يرجى ملء جميع الحقول المطلوبة', 'error');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-loading');
+            submitBtn.textContent = 'جاري الإنشاء...';
+
+            try {
+                const formData = new FormData(form);
+                const data = {
+                    patient_name: formData.get('patient_name'),
+                    patient_age: parseInt(formData.get('patient_age')),
+                    patient_blood_type: formData.get('patient_blood_type'),
+                    report_type: formData.get('report_type'),
+                    diagnosis: formData.get('diagnosis'),
+                    medications: medicines,
+                    allergies: allergies,
+                    notes: formData.get('notes') || ''
+                };
+
+                // Simulate API call (replace with real API endpoint)
+                const response = await fetch('/api/reports', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + (localStorage.getItem('token') || '')
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'خطأ في إنشاء التقرير');
+                }
+
+                const report = await response.json();
+                createdReport = report;
+
+                // Show success
+                form.style.display = 'none';
+                document.getElementById('successResult').classList.add('show');
+                showAlert('✓ تم إنشاء التقرير بنجاح!', 'success');
+
+            } catch (error) {
+                showAlert(error.message || 'حدث خطأ أثناء إنشاء التقرير', 'error');
+                console.error('Error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('btn-loading');
+                submitBtn.textContent = '✓ إنشاء التقرير';
+            }
+        });
+
+        // Alert Function
+        function showAlert(message, type = 'info') {
+            const alertsContainer = document.getElementById('alerts-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            const icons = {
+                success: '✓',
+                error: '✕',
+                info: 'ℹ'
+            };
+            alert.innerHTML = `
+                <div class="alert-icon">${icons[type]}</div>
+                <div>${message}</div>
+            `;
+            alertsContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            }, 5000);
+        }
+
+        // Result Actions
+        function viewReport() {
+            if (createdReport) {
+                window.location.href = `${createdReport.share_url}`;
+            }
+        }
+
+        function downloadQR() {
+            if (createdReport) {
+                const link = document.createElement('a');
+                link.href = `/api/reports/${createdReport.id}/qrcode`;
+                link.download = `qrcode_${createdReport.id}.png`;
+                link.click();
+            }
+        }
+
+        function copyShareLink() {
+            if (createdReport) {
+                navigator.clipboard.writeText(createdReport.share_url);
+                showAlert('تم نسخ الرابط إلى الحافظة', 'success');
+            }
+        }
+
+        function createAnother() {
+            document.getElementById('reportForm').reset();
+            medicines = [];
+            allergies = [];
+            createdReport = null;
+            document.getElementById('successResult').classList.remove('show');
+            document.getElementById('reportForm').style.display = 'block';
+            renderTags(medicines, 'medicinesInput', 'medicinesContainer');
+            renderTags(allergies, 'allergiesInput', 'allergiesContainer');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Set today's date as default
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="examination_date"]').value = today;
+    </script>
+</body>
+</html>
